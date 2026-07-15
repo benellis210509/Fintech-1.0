@@ -937,6 +937,7 @@ def add_watchlist(
     ticker = ticker.strip().upper()
     company_name = company_name.strip()
     notes = notes.strip()
+
     if not re.fullmatch(r"[A-Z0-9.\-^=]{1,20}", ticker):
         return templates.TemplateResponse(
             request=request,
@@ -949,6 +950,7 @@ def add_watchlist(
             ),
             status_code=400,
         )
+
     if len(company_name) > 150 or len(notes) > 3000:
         return templates.TemplateResponse(
             request=request,
@@ -961,14 +963,18 @@ def add_watchlist(
             ),
             status_code=400,
         )
+
     message = ticker + " added to watchlist."
     success = True
 
     try:
+        # Try to get market data, but don't stop the user from saving
+        # the ticker if Yahoo Finance is temporarily unavailable.
         data = yahoo_data.fetch_ticker_data(ticker) or {}
 
-        if not data.get("price"):
-            raise ValueError("Ticker does not look valid.")
+        # Automatically fill the company name if Yahoo provides one.
+        if not company_name:
+            company_name = str(data.get("company_name") or "").strip()
 
         conn = get_connection()
 
