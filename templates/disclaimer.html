@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Financial Information Disclaimer · Fintech</title><link rel="stylesheet" href="/static/styles.css?v=fintech-v1"></head>
+<body class="landing-body">
+<header class="landing-nav legal-nav">
+  <a class="landing-brand" href="/"><span class="brand-mark">FT</span><span>Fintech</span></a>
+  <nav><a href="/">Home</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/disclaimer">Disclaimer</a></nav>
+  <div class="landing-actions">{% if user %}<a class="button button-secondary button-small" href="/dashboard">Dashboard</a>{% else %}<a class="text-link" href="/login">Log in</a><a class="button button-primary button-small" href="/signup">Start free</a>{% endif %}</div>
+</header>
+<main class="legal-shell">
+  <span class="page-kicker">Important information</span><h1>Financial Information Disclaimer</h1>
+  <section><h2>No financial advice</h2><p>Fintech is a general research and educational tool. It does not provide regulated or personalised financial advice, investment planning, product suitability assessments, brokerage services or trading instructions.</p></section>
+  <section><h2>No buy, sell or hold recommendation</h2><p>Scores, flags, indicators, grades and AI-generated summaries are mechanical descriptions of limited data. They are not recommendations or opinions that you should acquire, dispose of, retain or change any particular financial product.</p></section>
+  <section><h2>Incomplete personal context</h2><p>The service does not know your complete financial position, objectives, debts, dependants, tax position, investment horizon, capacity for loss or liquidity requirements. It cannot determine what is appropriate for you.</p></section>
+  <section><h2>Data and model risk</h2><p>Uploaded information and third-party market data may be delayed, incomplete or wrong. AI-generated text can contain errors. Historical information and model scores do not predict future performance.</p></section>
+  <section><h2>Snapshot changes are not returns</h2><p>Changes between uploaded portfolio totals are not calculated investment returns unless cash flows, trades, fees, tax, currency movements and timing are correctly adjusted. The current service does not perform that full calculation.</p></section>
+  <section><h2>Obtain qualified help</h2><p>Before making a financial decision, verify the information and consider consulting a licensed New Zealand financial advice provider, accountant, tax adviser or lawyer as appropriate.</p></section>
+</main>
+<footer class="landing-footer legal-full-footer">
+  <div><a class="landing-brand" href="/"><span class="brand-mark">FT</span><span>Fintech</span></a><p>Portfolio research and educational analysis. Not financial advice.</p></div>
+  <div><strong>Product</strong><a href="/#features">Features</a><a href="/#difference">Why Fintech</a><a href="/#pricing">Plans</a><a href="/login">Log in</a></div>
+  <div><strong>Legal</strong><a href="/terms">Terms of Use</a><a href="/privacy">Privacy Policy</a><a href="/disclaimer">Financial Information Disclaimer</a>{% if support_email %}<a href="mailto:{{ support_email }}">Contact</a>{% endif %}</div>
+</footer>
+</body></html>

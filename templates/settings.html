@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings · Fintech</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/styles.css?v=fintech-v1"
+    >
+</head>
+
+<body>
+    {% set active = 'settings' %}
+    {% include 'nav.html' %}
+
+    <main class="main">
+        <div class="page-shell narrow-shell">
+
+            <header class="page-header">
+                <div>
+                    <span class="page-kicker">Preferences</span>
+                    <h1>Settings</h1>
+                    <p>
+                        Control how your portfolio is analysed and reported.
+                    </p>
+                </div>
+            </header>
+
+            <form action="/settings" method="post">
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token }}"
+                >
+
+                <section class="panel settings-panel final-card">
+
+                    <div class="setting-row">
+                        <div>
+                            <h3>Benchmark index</h3>
+                            <p>
+                                Used as general market context. This is not a
+                                cash-flow-adjusted performance calculation.
+                            </p>
+                        </div>
+
+                        <select name="benchmark">
+                            <option
+                                value="S&P 500"
+                                {% if settings.benchmark == 'S&P 500' %}
+                                    selected
+                                {% endif %}
+                            >
+                                S&P 500
+                            </option>
+
+                            <option
+                                value="NASDAQ 100"
+                                {% if settings.benchmark == 'NASDAQ 100' %}
+                                    selected
+                                {% endif %}
+                            >
+                                NASDAQ 100
+                            </option>
+
+                            <option
+                                value="NZX 50"
+                                {% if settings.benchmark == 'NZX 50' %}
+                                    selected
+                                {% endif %}
+                            >
+                                NZX 50
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="setting-row">
+                        <div>
+                            <h3>Analysis sensitivity</h3>
+                            <p>
+                                Controls generic structural warning thresholds.
+                                It is not a personal risk-tolerance assessment.
+                            </p>
+                        </div>
+
+                        <select name="risk_profile">
+                            <option
+                                value="Conservative"
+                                {% if settings.risk_profile == 'Conservative' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Conservative
+                            </option>
+
+                            <option
+                                value="Moderate"
+                                {% if settings.risk_profile == 'Moderate' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Moderate
+                            </option>
+
+                            <option
+                                value="Aggressive"
+                                {% if settings.risk_profile == 'Aggressive' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Aggressive
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="setting-row">
+                        <div>
+                            <h3>Report detail</h3>
+                            <p>
+                                Choose how much information is included in each
+                                PDF.
+                            </p>
+                        </div>
+
+                        <select name="report_type">
+                            <option
+                                value="Quick Summary"
+                                {% if settings.report_type == 'Quick Summary' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Quick Summary
+                            </option>
+
+                            <option
+                                value="Full Report"
+                                {% if settings.report_type == 'Full Report' %}
+                                    selected
+                                {% endif %}
+                            >
+                                Full Report
+                            </option>
+
+                            {% if
+                                user.is_admin
+                                or user.plan in ['pro', 'premium', 'admin']
+                            %}
+                                <option
+                                    value="Deep Analysis"
+                                    {% if settings.report_type == 'Deep Analysis' %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    Deep Analysis
+                                </option>
+                            {% else %}
+                                <option
+                                    value="Deep Analysis"
+                                    disabled
+                                >
+                                    Deep Analysis (Paid plan)
+                                </option>
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <div class="settings-save">
+                        <button
+                            class="button button-primary"
+                            type="submit"
+                        >
+                            Save preferences
+                        </button>
+                    </div>
+
+                </section>
+            </form>
+
+            <section class="panel danger-panel final-card">
+                <div>
+                    <span class="danger-kicker">Data controls</span>
+                    <h2>Reset portfolio data</h2>
+
+                    <p>
+                        Deletes your snapshots, holdings, stored research
+                        indicators, uploaded CSV and generated reports. Your
+                        account and watchlist remain.
+                    </p>
+                </div>
+
+                <form
+                    action="/settings/reset-data"
+                    method="post"
+                    data-confirm="Permanently delete all portfolio data and reports?"
+                >
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="{{ csrf_token }}"
+                    >
+
+                    <button
+                        type="submit"
+                        class="button button-danger"
+                    >
+                        Reset data
+                    </button>
+                </form>
+            </section>
+
+        </div>
+    </main>
+</body>
+</html>

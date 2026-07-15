@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fintech · Portfolio research and reporting</title>
+  <link rel="stylesheet" href="/static/styles.css?v=fintech-v1">
+</head>
+<body class="landing-body">
+<header class="landing-nav">
+  <a class="landing-brand" href="/"><span class="brand-mark">FT</span><span>Fintech</span></a>
+  <nav><a href="#features">Features</a><a href="#how">How it works</a><a href="#difference">Why Fintech</a><a href="#pricing">Plans</a></nav>
+  <div class="landing-actions">
+    {% if user %}<a class="button button-secondary button-small" href="/dashboard">Dashboard</a>
+    {% else %}<a class="text-link" href="/login">Log in</a><a class="button button-primary button-small" href="/signup">Start free</a>{% endif %}
+  </div>
+</header>
+<main>
+<section class="landing-hero">
+  <div class="hero-copy">
+    <span class="hero-badge"><span></span>Portfolio research and educational analysis</span>
+    <h1>Understand your portfolio with <em>clearer information.</em></h1>
+    <p>Upload a single-currency portfolio snapshot to review allocation, concentration, benchmark context and structured PDF summaries. The service does not provide personalised financial advice or trading instructions.</p>
+    <div class="hero-actions"><a class="button button-primary button-large" href="{% if user %}/dashboard{% else %}/signup{% endif %}">Analyse a portfolio <span>→</span></a><a class="button button-secondary button-large" href="#features">Explore features</a></div>
+    <div class="trust-row"><span>✓ No card required</span><span>✓ Separate account access</span><span>✓ Research-focused</span></div>
+  </div>
+  <div class="product-preview real-preview" aria-label="Example Fintech dashboard preview">
+    <div class="preview-toolbar"><div><i></i><i></i><i></i></div><span>Dashboard preview</span><b>Example</b></div>
+    <div class="preview-kicker">Portfolio overview</div>
+    <div class="preview-value"><span>Uploaded portfolio value</span><strong>NZD 124,860</strong><small>Snapshot value change: +4.8%</small></div>
+    <div class="preview-score-card">
+      <div><span>Portfolio structure</span><strong>82<small>/100</small></strong><em>Strong structure</em></div>
+      <div class="preview-score-bars"><span style="--score:84%">Diversification <b>84%</b></span><span style="--score:76%">Concentration <b>76%</b></span><span style="--score:92%">Cash allocation <b>92%</b></span></div>
+    </div>
+    <div class="preview-grid"><div><span>Holdings</span><strong>12</strong></div><div><span>Largest position</span><strong>14.2%</strong></div><div><span>Cash</span><strong>8.4%</strong></div></div>
+    <div class="preview-chart"><div style="height:42%"></div><div style="height:62%"></div><div style="height:48%"></div><div style="height:76%"></div><div style="height:66%"></div><div style="height:91%"></div><div style="height:84%"></div></div>
+  </div>
+</section>
+<section class="proof-strip"><p>Designed for investors who want organised portfolio information</p><div><span>Allocation analysis</span><span>Concentration scoring</span><span>Structured reporting</span><span>Snapshot context</span></div></section>
+<section class="landing-section af-outcome-section">
+  <div class="section-heading"><span class="page-kicker">See the important parts first</span><h2>A clearer view of your portfolio</h2><p>Key information is surfaced before the deeper tables, methodology and reports.</p></div>
+  <div class="af-outcome-grid">
+    <article><span class="af-outcome-label">Portfolio score</span><strong>83/100</strong><p>A consistent structural score with a plain-language explanation.</p></article>
+    <article><span class="af-outcome-label">Diversification</span><strong>Strong</strong><p>See position spread, concentration and cash allocation together.</p></article>
+    <article><span class="af-outcome-label">Research report</span><strong>PDF</strong><p>Choose a quick summary, full report or deep analysis.</p></article>
+    <article><span class="af-outcome-label">Plain language</span><strong>Clear</strong><p>Technical measures are explained for people who are still learning.</p></article>
+  </div>
+</section>
+<section id="features" class="landing-section">
+  <div class="section-heading"><span class="page-kicker">One research workspace</span><h2>Turn raw holdings into understandable information</h2><p>Review an uploaded snapshot without presenting the output as personalised advice, a forecast or a guarantee.</p></div>
+  <div class="feature-grid">
+    <article class="feature-card feature-large"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M4 19V9m5 10V5m5 14v-7m5 7V3"/></svg></span><span ></span><h3>Portfolio dashboard</h3><p>See uploaded value, allocation, concentration, cash and changes between snapshots in one overview.</p><div class="mini-dashboard"><span></span><span></span><span></span></div></article>
+    <article class="feature-card"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v5c0 5.2 3.4 8.5 8 10 4.6-1.5 8-4.8 8-10V6l-8-3Z"/></svg></span><span ></span><h3>Structural analysis</h3><p>Identify large positions, sector concentration and threshold flags from the uploaded data.</p></article>
+    <article class="feature-card"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6V3Zm8 0v4h4M9 12h6M9 16h6"/></svg></span><span ></span><h3>PDF summaries</h3><p>Generate structured reports with methodology, data limits and plain-language research notes.</p></article>
+    <article class="feature-card"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="m4 16 5-5 4 4 7-8m-5 0h5v5"/></svg></span><span ></span><h3>Snapshot comparisons</h3><p>Compare uploaded account totals. These changes are not calculated investment performance.</p></article>
+    <article class="feature-card"><span class="feature-icon"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="3"/></svg></span><span ></span><h3>Monitoring</h3><p>Record tickers, latest available third-party prices and your own notes. Market data may be delayed.</p></article>
+  </div>
+</section>
+<section id="how" class="landing-section how-section"><div class="section-heading"><span class="page-kicker">Simple by design</span><h2>From CSV to research summary</h2></div><div class="steps-grid"><article><span>01</span><h3>Upload one base currency</h3><p>Use a CSV where all money values are expressed in the same currency.</p></article><article><span>02</span><h3>Run the analysis</h3><p>The system calculates allocation, concentration and general market context.</p></article><article><span>03</span><h3>Review limitations</h3><p>Use the dashboard and report as research inputs, not as personal financial advice.</p></article></div></section>
+<section id="difference" class="landing-section af-difference-section">
+  <div class="section-heading"><span class="page-kicker">Built for a different job</span><h2>How Fintech is different</h2><p>Fintech organises and explains uploaded portfolio data. It does not replace licensed advice or make decisions for you.</p></div>
+  <div class="af-difference-grid">
+    <article><span>Compared with a financial adviser</span><h3>Research workspace, not personal advice</h3><p>No suitability assessment, personal plan or regulated recommendation. You receive structured analysis of the data you upload.</p></article>
+    <article><span>Compared with a spreadsheet</span><h3>Less manual setup</h3><p>Allocation, concentration, scores, reports and plain-language explanations are generated from one upload.</p></article>
+    <article><span>Compared with a broker dashboard</span><h3>More focus on structure</h3><p>The product highlights portfolio concentration, cash weight and selected research indicators rather than encouraging trades.</p></article>
+    <article><span>Compared with generic AI</span><h3>Repeatable methodology</h3><p>Scores and warnings follow visible calculation rules, with limits and data quality explained in the report.</p></article>
+  </div>
+</section>
+<section id="pricing" class="landing-section pricing-section">
+  <div class="section-heading">
+    <span class="page-kicker">Plans</span>
+    <h2>Simple pricing with a clear upgrade</h2>
+    <p>
+      Start free, then upgrade when you need deeper analysis, more monthly usage
+      and Pro-only research features.
+    </p>
+  </div>
+
+  <div class="pricing-grid pricing-grid-two">
+
+    <article class="price-card">
+      <div class="price-card-top">
+        <div>
+          <span class="plan-label">Free</span>
+          <h3>Core portfolio research</h3>
+        </div>
+      </div>
+
+      <div class="price">
+        NZ$0
+        <small>/month</small>
+      </div>
+
+      <p class="price-summary">
+        For investors who want the essential dashboard, history and portfolio
+        analytics.
+      </p>
+
+      <ul class="plan-feature-list">
+        <li>1 Portfolio Analysis per month</li>
+        <li>Dashboard and portfolio history</li>
+        <li>Portfolio analytics and score breakdown</li>
+        <li>Company fundamentals</li>
+        <li>Watchlist limited to 5 stocks</li>
+        <li>Report history and PDF downloads</li>
+        <li class="feature-locked">Portfolio Health Score</li>
+        <li class="feature-locked">Risk analysis and warnings</li>
+        <li class="feature-locked">AI commentary</li>
+        <li class="feature-locked">Recommendations</li>
+        <li class="feature-locked">Benchmark comparison</li>
+        <li class="feature-locked">PDF charts</li>
+        <li class="feature-locked">Deep Analysis report</li>
+      </ul>
+
+      <a
+        class="button button-secondary full-width"
+        href="{% if user %}/dashboard{% else %}/signup{% endif %}"
+      >
+        Start free
+      </a>
+    </article>
+
+    <article class="price-card featured">
+      <span class="popular">Most popular</span>
+
+      <div class="price-card-top">
+        <div>
+          <span class="plan-label">Pro</span>
+          <h3>Full Fintech experience</h3>
+        </div>
+      </div>
+
+      <div class="price">
+        NZ$19.99
+        <small>/month</small>
+      </div>
+
+      <p class="price-summary">
+        For investors who want deeper interpretation, AI-assisted commentary and
+        more monthly analyses.
+      </p>
+
+      <ul class="plan-feature-list">
+        <li>5 Portfolio Analyses per month</li>
+        <li>Unlimited watchlist</li>
+        <li>Everything included in Free</li>
+        <li>Portfolio Health Score</li>
+        <li>Risk analysis and warnings</li>
+        <li>AI commentary</li>
+        <li>Recommendations</li>
+        <li>Benchmark comparison</li>
+        <li>PDF charts</li>
+        <li>Quick Summary report</li>
+        <li>Full Report</li>
+        <li>Deep Analysis report</li>
+      </ul>
+
+      {% if user and subscription and subscription.plan in ['pro', 'premium'] %}
+        <a
+          class="button button-secondary full-width"
+          href="/account"
+        >
+          Manage subscription
+        </a>
+
+      {% elif paid_plans_enabled and stripe_ready and user %}
+        <form
+          method="post"
+          action="/create-checkout-session/pro"
+        >
+          <input
+            type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token }}"
+          >
+
+          <button
+            class="button button-primary full-width"
+            type="submit"
+          >
+            Upgrade to Pro
+          </button>
+        </form>
+
+      {% elif not user %}
+        <a
+          class="button button-primary full-width"
+          href="/signup"
+        >
+          Create account
+        </a>
+
+      {% else %}
+        <button
+          class="button button-primary full-width"
+          type="button"
+          disabled
+        >
+          Pro unavailable
+        </button>
+      {% endif %}
+    </article>
+
+  </div>
+
+  <div class="pricing-note">
+    <span class="security-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M7 10V7a5 5 0 0 1 10 0v3"></path>
+        <path d="M6 10h12v11H6V10Z"></path>
+      </svg>
+    </span>
+
+    <p>
+      Paid subscriptions are handled securely through Stripe. Pro users can
+      manage payment details, invoices and cancellation from the Account page.
+    </p>
+  </div>
+</section>
+<section class="cta-section"><div><span class="page-kicker">Ready to test it?</span><h2>Turn an uploaded snapshot into clearer research.</h2><p>Create an account and review the limitations before relying on any output.</p></div><a class="button button-primary button-large" href="{% if user %}/dashboard{% else %}/signup{% endif %}">Get started free <span>→</span></a></section>
+</main>
+<footer class="landing-footer">
+  <div><a class="landing-brand" href="/"><span class="brand-mark">FT</span><span>Fintech</span></a><p>Portfolio research and educational analysis. Not financial advice.</p></div>
+  <div><strong>Product</strong><a href="#features">Features</a><a href="#difference">Why Fintech</a><a href="#pricing">Plans</a><a href="/login">Log in</a></div>
+  <div><strong>Legal</strong><a href="/terms">Terms of Use</a><a href="/privacy">Privacy Policy</a><a href="/disclaimer">Financial Information Disclaimer</a>{% if support_email %}<a href="mailto:{{ support_email }}">Contact</a>{% endif %}</div>
+</footer>
+</body>
+</html>

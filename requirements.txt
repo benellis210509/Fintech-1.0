@@ -1,0 +1,13 @@
+fastapi==0.115.14
+uvicorn[standard]==0.30.6
+jinja2==3.1.4
+python-multipart==0.0.12
+pandas==2.2.3
+matplotlib==3.9.4
+reportlab==4.2.5
+python-dotenv==1.0.1
+openai==1.59.9
+requests==2.32.3
+yfinance==0.2.54
+itsdangerous==2.2.0
+stripe==11.4.1

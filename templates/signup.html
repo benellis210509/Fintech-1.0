@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Create account · Fintech</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/styles.css?v=fintech-v1">
+</head>
+<body class="auth-body">
+<a class="auth-brand" href="/"><span class="brand-mark">FT</span><span>Fintech</span></a>
+<main class="auth-layout">
+  <section class="auth-copy">
+    <span class="page-kicker">Start free</span>
+    <h1>Understand the structure of your uploaded portfolio.</h1>
+    <p>Create an account to keep your portfolio snapshots, settings and reports separated from other users.</p>
+    <div class="auth-feature"><span>✓</span>Research and educational analysis</div>
+    <div class="auth-feature"><span>✓</span>No card required for the free plan</div>
+    <div class="auth-feature"><span>✓</span>Separate account access</div>
+  </section>
+  <section class="auth-card">
+    <div><h2>Create account</h2><p>Set up your portfolio research workspace.</p></div>
+    {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+    <form method="post" action="/signup" class="stack-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <div class="field"><label for="signup-name">Full name</label><input id="signup-name" type="text" name="name" required autocomplete="name" placeholder="Your name"></div>
+      <div class="field"><label for="signup-email">Email address</label><input id="signup-email" type="email" name="email" required autocomplete="email" placeholder="you@example.com"></div>
+      <div class="field"><label for="signup-password">Password</label><input id="signup-password" type="password" name="password" minlength="10" required autocomplete="new-password" placeholder="At least 10 characters"></div>
+      <div class="field"><label for="signup-confirm">Confirm password</label><input id="signup-confirm" type="password" name="confirm_password" minlength="10" required autocomplete="new-password" placeholder="Repeat your password"></div>
+      <label class="terms-check">
+        <input type="checkbox" name="accept_terms" value="yes" required>
+        <span>I accept the <a href="/terms" target="_blank" rel="noopener">Terms of Use</a> and acknowledge the <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="/disclaimer" target="_blank" rel="noopener">Financial Information Disclaimer</a>.</span>
+      </label>
+      <button class="button button-primary full-width" type="submit">Create account</button>
+    </form>
+    <p class="auth-switch">Already have an account? <a href="/login">Log in</a></p>
+  </section>
+</main>
+</body>
+</html>

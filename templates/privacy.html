@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Privacy Policy · Fintech</title><link rel="stylesheet" href="/static/styles.css?v=fintech-v1"></head>
+<body class="landing-body">
+<header class="landing-nav legal-nav">
+  <a class="landing-brand" href="/"><span class="brand-mark">FT</span><span>Fintech</span></a>
+  <nav><a href="/">Home</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/disclaimer">Disclaimer</a></nav>
+  <div class="landing-actions">{% if user %}<a class="button button-secondary button-small" href="/dashboard">Dashboard</a>{% else %}<a class="text-link" href="/login">Log in</a><a class="button button-primary button-small" href="/signup">Start free</a>{% endif %}</div>
+</header>
+<main class="legal-shell">
+  <span class="page-kicker">Version {{ terms_version }}</span><h1>Privacy Policy</h1>
+  <div class="legal-notice">This is a practical pre-launch policy draft. The operator must insert a real legal entity name and privacy contact, then obtain New Zealand legal review before public launch.</div>
+  <section><h2>1. Who operates the service</h2><p>The service is operated by {{ legal_entity_name }}. {% if privacy_email %}Privacy enquiries can be sent to <a href="mailto:{{ privacy_email }}">{{ privacy_email }}</a>.{% else %}<strong>A privacy contact has not yet been configured. The service should not launch publicly until one is published.</strong>{% endif %}</p></section>
+  <section><h2>2. Information collected</h2><p>We may collect your name, email address, password hash, login and account records, subscription status, uploaded portfolio CSV data, holdings, values, watchlist notes, settings, reports, technical logs and information you provide when contacting us. Stripe handles payment-card details; the service does not store full card numbers.</p></section>
+  <section><h2>3. Why information is used</h2><p>Information is used to create and secure your account, provide portfolio dashboards and reports, maintain separate user records, process subscriptions, respond to support and privacy requests, prevent misuse, diagnose errors and improve the service.</p></section>
+  <section><h2>4. Service providers and overseas processing</h2><p>The service may send limited information to service providers used for hosting, payments, AI text generation and market data. These may include Render, Stripe, OpenAI and Yahoo Finance or related data providers. Some processing may occur outside New Zealand. Do not upload information you are not authorised to disclose.</p></section>
+  <section><h2>5. AI and market data</h2><p>When AI commentary is enabled, portfolio totals, structural flags and mechanical research indicators may be sent to the configured AI provider. Market tickers are sent to third-party market-data services. Market data can be delayed, incomplete or inaccurate.</p></section>
+  <section><h2>6. Storage and retention</h2><p>We retain information only while reasonably required for the purposes above, legal obligations, security and dispute resolution. Raw CSV uploads are deleted after synchronous processing. Reports and account data are retained until deletion or another documented retention rule applies. The current SQLite/local-file deployment is suitable for controlled testing only and must be replaced or configured with reliable persistent storage before production use.</p></section>
+  <section><h2>7. Security</h2><p>Reasonable safeguards are used, including hashed passwords, signed sessions, access separation and transport security in production. No internet service is completely secure. You are responsible for keeping your password confidential.</p></section>
+  <section><h2>8. Access, correction and deletion</h2><p>You may request access to or correction of your personal information, or request account deletion, by contacting the privacy officer. Identity verification may be required before a request is completed.</p></section>
+  <section><h2>9. Privacy breaches</h2><p>We will assess suspected privacy breaches and notify affected people and the New Zealand Privacy Commissioner when required by law.</p></section>
+  <section><h2>10. Changes</h2><p>We may update this policy. Material changes should be communicated through the service or by email, and the version date will be updated.</p></section>
+</main>
+<footer class="landing-footer legal-full-footer">
+  <div><a class="landing-brand" href="/"><span class="brand-mark">FT</span><span>Fintech</span></a><p>Portfolio research and educational analysis. Not financial advice.</p></div>
+  <div><strong>Product</strong><a href="/#features">Features</a><a href="/#difference">Why Fintech</a><a href="/#pricing">Plans</a><a href="/login">Log in</a></div>
+  <div><strong>Legal</strong><a href="/terms">Terms of Use</a><a href="/privacy">Privacy Policy</a><a href="/disclaimer">Financial Information Disclaimer</a>{% if support_email %}<a href="mailto:{{ support_email }}">Contact</a>{% endif %}</div>
+</footer>
+</body></html>

@@ -1,0 +1,44 @@
+services:
+  - type: web
+    name: ai-financial-assistant
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: python3 -m uvicorn web_app:app --host 0.0.0.0 --port $PORT --proxy-headers
+    healthCheckPath: /health
+    maxShutdownDelaySeconds: 60
+    disk:
+      name: fintech-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: STORAGE_DIR
+        value: /var/data
+      - key: DATABASE_PATH
+        value: /var/data/portfolio.db
+      - key: APP_TIMEZONE
+        value: Pacific/Auckland
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: PAID_PLANS_ENABLED
+        value: "false"
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: SUPPORT_EMAIL
+        sync: false
+      - key: PRIVACY_EMAIL
+        sync: false
+      - key: LEGAL_ENTITY_NAME
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_PRO_PRICE_ID
+        sync: false
+      - key: STRIPE_PREMIUM_PRICE_ID
+        sync: false

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Watchlist · Fintech</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/styles.css?v=fintech-v1"
+    >
+</head>
+
+<body>
+    {% set active = 'watchlist' %}
+    {% include 'nav.html' %}
+
+    <main class="main">
+        <div class="page-shell">
+
+            <header class="page-header">
+                <div>
+                    <span class="page-kicker">Market monitor</span>
+                    <h1>Watchlist</h1>
+                    <p>
+                        Track companies you may want to research further.
+                    </p>
+                </div>
+            </header>
+
+            {% if message %}
+                <div class="alert {% if success == false %}alert-error{% else %}alert-success{% endif %}">
+                    {{ message }}
+                </div>
+            {% endif %}
+
+            <section class="panel final-card watchlist-usage-card">
+                <div class="panel-header">
+                    <div>
+                        <span class="page-kicker">Plan allowance</span>
+                        <h2>Watchlist usage</h2>
+
+                        {% if subscription.plan in ['pro', 'premium'] or user.is_admin %}
+                            <p>
+                                Your plan includes an unlimited watchlist.
+                            </p>
+                        {% else %}
+                            <p>
+                                Free accounts can save up to 5 stocks.
+                            </p>
+                        {% endif %}
+                    </div>
+
+                    <span class="plan-pill">
+                        {{ subscription.plan|capitalize }}
+                    </span>
+                </div>
+
+                <div class="watchlist-usage-row">
+                    <div>
+                        <span>Stocks saved</span>
+
+                        {% if subscription.plan in ['pro', 'premium'] or user.is_admin %}
+                            <strong>{{ watchlist|length }}</strong>
+                            <small>Unlimited allowance</small>
+                        {% else %}
+                            <strong>{{ watchlist|length }} / 5</strong>
+                            <small>
+                                {{ 5 - watchlist|length }} slots remaining
+                            </small>
+                        {% endif %}
+                    </div>
+
+                    {% if subscription.plan == 'free' and not user.is_admin %}
+                        <div class="watchlist-usage-progress">
+                            <div class="progress-track">
+                                <div
+                                    class="progress-fill"
+                                    style="width: {{ ((watchlist|length / 5) * 100) if watchlist|length < 5 else 100 }}%;"
+                                ></div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                {% if subscription.plan == 'free' and watchlist|length >= 5 and not user.is_admin %}
+                    <div class="upgrade-inline">
+                        <div>
+                            <strong>Watchlist limit reached</strong>
+                            <p>
+                                Upgrade to Pro for an unlimited watchlist and
+                                additional portfolio analysis features.
+                            </p>
+                        </div>
+
+                        <a
+                            href="/#pricing"
+                            class="button button-secondary button-small"
+                        >
+                            View Pro
+                        </a>
+                    </div>
+                {% endif %}
+            </section>
+
+            <section class="panel add-stock-panel final-card">
+                <form
+                    class="inline-form"
+                    action="/watchlist/add"
+                    method="post"
+                >
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="{{ csrf_token }}"
+                    >
+
+                    <div class="field grow">
+                        <label for="ticker">
+                            Ticker symbol
+                        </label>
+
+                        <input
+                            id="ticker"
+                            type="text"
+                            name="ticker"
+                            placeholder="e.g. NVDA"
+                            required
+                            {% if subscription.plan == 'free' and watchlist|length >= 5 and not user.is_admin %}
+                                disabled
+                            {% endif %}
+                        >
+                    </div>
+
+                    <button
+                        class="button button-primary"
+                        type="submit"
+                        {% if subscription.plan == 'free' and watchlist|length >= 5 and not user.is_admin %}
+                            disabled
+                        {% endif %}
+                    >
+                        Add stock
+                    </button>
+                </form>
+            </section>
+
+            <section class="panel final-card">
+                <div class="panel-header">
+                    <div>
+                        <h2>Saved companies</h2>
+                        <p>
+                            Latest available prices are loaded when this page
+                            opens.
+                        </p>
+                    </div>
+
+                    <span class="count-chip">
+                        {{ watchlist|length }}
+                        stock{% if watchlist|length != 1 %}s{% endif %}
+                    </span>
+                </div>
+
+                {% if watchlist %}
+                    <div class="watch-grid">
+                        {% for item in watchlist %}
+                            <article class="watch-card">
+                                <div class="watch-card-head">
+                                    <div>
+                                        <span class="ticker-chip">
+                                            {{ item.ticker }}
+                                        </span>
+
+                                        <h3>
+                                            {{ item.company_name or 'Company name not set' }}
+                                        </h3>
+
+                                        <p>
+                                            {{ item.sector }}
+                                        </p>
+                                    </div>
+
+                                    <div class="price-block">
+                                        <strong>{{ item.price }}</strong>
+                                        <span>Latest available price</span>
+                                    </div>
+                                </div>
+
+                                {% if item.notes %}
+                                    <div class="note-block">
+                                        <span>Research notes</span>
+                                        <p>{{ item.notes }}</p>
+                                    </div>
+                                {% endif %}
+
+                                <div class="watch-actions">
+                                    <button
+                                        type="button"
+                                        class="button button-secondary button-small js-toggle-edit"
+                                        data-edit-target="edit-{{ item.ticker }}"
+                                    >
+                                        Edit details
+                                    </button>
+                                </div>
+
+                                <div
+                                    id="edit-{{ item.ticker }}"
+                                    class="edit-panel"
+                                    hidden
+                                >
+                                    <form
+                                        action="/watchlist/edit"
+                                        method="post"
+                                        class="stack-form"
+                                    >
+                                        <input
+                                            type="hidden"
+                                            name="csrf_token"
+                                            value="{{ csrf_token }}"
+                                        >
+
+                                        <input
+                                            type="hidden"
+                                            name="ticker"
+                                            value="{{ item.ticker }}"
+                                        >
+
+                                        <div class="field">
+                                            <label>Company name</label>
+
+                                            <input
+                                                type="text"
+                                                name="company_name"
+                                                value="{{ item.company_name or '' }}"
+                                                placeholder="Optional"
+                                            >
+                                        </div>
+
+                                        <div class="field">
+                                            <label>Notes</label>
+
+                                            <textarea
+                                                name="notes"
+                                                placeholder="Research thesis, questions or reminder"
+                                            >{{ item.notes or '' }}</textarea>
+                                        </div>
+
+                                        <div class="form-actions split">
+                                            <button
+                                                class="button button-primary button-small"
+                                                type="submit"
+                                            >
+                                                Save changes
+                                            </button>
+                                    </form>
+
+                                    <form
+                                        action="/watchlist/delete"
+                                        method="post"
+                                        data-confirm="Remove this stock from your watchlist?"
+                                    >
+                                        <input
+                                            type="hidden"
+                                            name="csrf_token"
+                                            value="{{ csrf_token }}"
+                                        >
+
+                                        <input
+                                            type="hidden"
+                                            name="ticker"
+                                            value="{{ item.ticker }}"
+                                        >
+
+                                        <button
+                                            class="button button-danger button-small"
+                                            type="submit"
+                                        >
+                                            Remove
+                                        </button>
+                                    </form>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+
+                {% else %}
+                    <div class="empty-inline af-watch-empty">
+                        <div class="empty-icon small">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </div>
+
+                        <div>
+                            <h3>Your watchlist is empty</h3>
+                            <p>
+                                Add a ticker above to begin tracking prices and
+                                research notes.
+                            </p>
+                        </div>
+                    </div>
+                {% endif %}
+            </section>
+
+        </div>
+    </main>
+
+
+</body>
+</html>

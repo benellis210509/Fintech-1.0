@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dashboard | Fintech</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', path='styles.css') ~ '?v=20260715-1' }}"
+    >
+</head>
+
+<body>
+    {% set active = "dashboard" %}
+    {% include "nav.html" %}
+
+    <main class="main">
+        <div class="page-shell">
+
+            <header class="page-header">
+                <div>
+                    <span class="page-kicker">Portfolio overview</span>
+                    <h1>Dashboard</h1>
+
+                    {% if dashboard %}
+                        <p>
+                            Latest portfolio snapshot:
+                            {{ dashboard.snapshot_date }}
+                        </p>
+                    {% else %}
+                        <p>
+                            Upload your portfolio to generate your dashboard.
+                        </p>
+                    {% endif %}
+                </div>
+            </header>
+
+            {% if dashboard %}
+
+                {% if dashboard.portfolio_score %}
+                    <section class="portfolio-score-simple af-score-card">
+
+                        <div class="score-overview">
+                            <span class="page-kicker">
+                                Portfolio structure
+                            </span>
+
+                            {% if subscription.plan in ['pro', 'premium'] or user.is_admin %}
+                                <h2>
+                                    {{ dashboard.portfolio_score.score }}/100
+                                </h2>
+
+                                <strong class="positive">
+                                    {{ dashboard.portfolio_score.grade }}
+                                    ·
+                                    {{ dashboard.portfolio_score.label }}
+                                </strong>
+
+                            {% else %}
+                                <div class="locked-score-value">
+                                    <span class="feature-lock-icon">
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M7 10V7a5 5 0 0 1 10 0v3"></path>
+                                            <path d="M6 10h12v11H6V10Z"></path>
+                                        </svg>
+                                    </span>
+
+                                    <div>
+                                        <h2>Portfolio Health Score</h2>
+                                        <p>
+                                            The overall score and grade are
+                                            available with Fintech Pro.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <a
+                                    href="/#pricing"
+                                    class="button button-primary button-small"
+                                >
+                                    View Pro
+                                </a>
+                            {% endif %}
+
+                            <p class="score-description">
+                                Based on holding count, concentration, cash
+                                percentage and position spread. It does not
+                                assess suitability or future returns.
+                            </p>
+                        </div>
+
+                        <div class="score-breakdown">
+                            <div class="score-breakdown-heading">
+                                <div>
+                                    <span class="page-kicker">
+                                        Score breakdown
+                                    </span>
+
+                                    <h3>Portfolio structure factors</h3>
+                                </div>
+
+                                <span class="count-chip">
+                                    Included
+                                </span>
+                            </div>
+
+                            {% for category in dashboard.portfolio_score.categories %}
+                                <div>
+                                    <div class="score-row">
+                                        <span>{{ category.name }}</span>
+
+                                        <strong>
+                                            {{ category.score }}/{{ category.maximum }}
+                                        </strong>
+                                    </div>
+
+                                    <div class="progress-track">
+                                        <div
+                                            class="progress-fill"
+                                            style="width: {{ ((category.score / category.maximum) * 100) | round }}%;"
+                                        ></div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    </section>
+                {% endif %}
+
+                <section class="stat-grid af-stat-grid">
+
+                    <article class="metric-card">
+                        <div class="metric-top">
+                            <span>Portfolio value</span>
+
+                            <span class="metric-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M4 19V9"></path>
+                                    <path d="M10 19V5"></path>
+                                    <path d="M16 19v-7"></path>
+                                    <path d="M22 19V2"></path>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <strong>
+                            {{ dashboard.portfolio_value }}
+                        </strong>
+
+                        <small>
+                            Current portfolio value
+                        </small>
+                    </article>
+
+                    <article class="metric-card">
+                        <div class="metric-top">
+                            <span>Snapshot value change</span>
+
+                            <span class="metric-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M3 17l6-6 4 4 8-9"></path>
+                                    <path d="M15 6h6v6"></path>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <strong>
+                            {{ dashboard.monthly_change }}
+                        </strong>
+
+                        <small class="positive">
+                            {{ dashboard.monthly_change_pct }}
+                        </small>
+                    </article>
+
+                    <article class="metric-card">
+                        <div class="metric-top">
+                            <span>Position concentration score</span>
+
+                            <span class="metric-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 3l8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7z"></path>
+                                    <path d="M9 12l2 2 4-4"></path>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <strong>
+                            {{ dashboard.diversification_score }}/100
+                        </strong>
+
+                        <small>
+                            Higher means positions are more evenly distributed
+                        </small>
+                    </article>
+
+                    <article class="metric-card">
+                        <div class="metric-top">
+                            <span>Holdings</span>
+
+                            <span class="metric-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <rect x="3" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="3" width="7" height="7"></rect>
+                                    <rect x="3" y="14" width="7" height="7"></rect>
+                                    <rect x="14" y="14" width="7" height="7"></rect>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <strong>
+                            {{ dashboard.holdings_count }}
+                        </strong>
+
+                        <small>
+                            Individual positions
+                        </small>
+                    </article>
+
+                </section>
+
+                <section class="content-grid half">
+
+                    <article class="panel compact-panel final-card">
+                        <div class="panel-header">
+                            <div>
+                                <span class="page-kicker">
+                                    Portfolio structure
+                                </span>
+
+                                <h2>Key details</h2>
+                            </div>
+                        </div>
+
+                        <dl class="summary-list">
+                            <div>
+                                <dt>Cash balance</dt>
+                                <dd>{{ dashboard.cash_balance }}</dd>
+                            </div>
+
+                            <div>
+                                <dt>Cash allocation</dt>
+                                <dd>{{ dashboard.cash_pct }}</dd>
+                            </div>
+
+                            <div>
+                                <dt>Largest holding</dt>
+                                <dd>{{ dashboard.largest_holding }}</dd>
+                            </div>
+
+                            <div>
+                                <dt>Largest position</dt>
+                                <dd>{{ dashboard.largest_weight }}</dd>
+                            </div>
+                        </dl>
+
+                        <div class="panel-footer">
+                            <a href="/reports" class="text-link">
+                                View portfolio reports →
+                            </a>
+                        </div>
+                    </article>
+
+                    <article class="panel compact-panel final-card">
+                        <div class="panel-header">
+                            <div>
+                                <span class="page-kicker">
+                                    Allocation
+                                </span>
+
+                                <h2>Largest holdings</h2>
+                            </div>
+
+                            <span class="count-chip">
+                                Top 5
+                            </span>
+                        </div>
+
+                        {% if dashboard.allocation_chart %}
+
+                            {% for item in dashboard.allocation_chart[:5] %}
+                                <div class="allocation-row">
+                                    <div class="allocation-meta">
+                                        <strong>{{ item.ticker }}</strong>
+                                        <span>{{ item.value }}</span>
+                                        <b>{{ item.weight }}%</b>
+                                    </div>
+
+                                    <div class="progress-track">
+                                        <div
+                                            class="progress-fill"
+                                            style="width: {{ item.weight }}%;"
+                                        ></div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        {% else %}
+                            <div class="empty-inline">
+                                <div>
+                                    <h3>No holdings available</h3>
+
+                                    <p>
+                                        Upload a valid portfolio CSV.
+                                    </p>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="panel-footer">
+                            <a href="/watchlist" class="text-link">
+                                Open watchlist →
+                            </a>
+                        </div>
+                    </article>
+
+                </section>
+
+                {% if subscription.plan == "free" and not user.is_admin %}
+                    <section class="panel final-card pro-report-preview">
+                        <div class="panel-header">
+                            <div>
+                                <span class="page-kicker">
+                                    Fintech Pro
+                                </span>
+
+                                <h2>Unlock deeper report analysis</h2>
+
+                                <p>
+                                    These features already exist inside Fintech's
+                                    Pro reporting system.
+                                </p>
+                            </div>
+
+                            <a
+                                href="/#pricing"
+                                class="button button-primary button-small"
+                            >
+                                View Pro
+                            </a>
+                        </div>
+
+                        <div class="pro-feature-grid">
+
+                            <article class="pro-feature-card">
+                                <span class="feature-lock-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M7 10V7a5 5 0 0 1 10 0v3"></path>
+                                        <path d="M6 10h12v11H6V10Z"></path>
+                                    </svg>
+                                </span>
+
+                                <div>
+                                    <h3>Risk analysis</h3>
+                                    <p>
+                                        Structural warnings for concentration,
+                                        cash allocation and diversification.
+                                    </p>
+                                </div>
+
+                                <span class="pro-chip">Pro</span>
+                            </article>
+
+                            <article class="pro-feature-card">
+                                <span class="feature-lock-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M7 10V7a5 5 0 0 1 10 0v3"></path>
+                                        <path d="M6 10h12v11H6V10Z"></path>
+                                    </svg>
+                                </span>
+
+                                <div>
+                                    <h3>AI commentary</h3>
+                                    <p>
+                                        Plain-language commentary generated from
+                                        portfolio and market information.
+                                    </p>
+                                </div>
+
+                                <span class="pro-chip">Pro</span>
+                            </article>
+
+                            <article class="pro-feature-card">
+                                <span class="feature-lock-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M7 10V7a5 5 0 0 1 10 0v3"></path>
+                                        <path d="M6 10h12v11H6V10Z"></path>
+                                    </svg>
+                                </span>
+
+                                <div>
+                                    <h3>Research indicators</h3>
+                                    <p>
+                                        Existing review indicators with
+                                        confidence and supporting reasoning.
+                                    </p>
+                                </div>
+
+                                <span class="pro-chip">Pro</span>
+                            </article>
+
+                            <article class="pro-feature-card">
+                                <span class="feature-lock-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M7 10V7a5 5 0 0 1 10 0v3"></path>
+                                        <path d="M6 10h12v11H6V10Z"></path>
+                                    </svg>
+                                </span>
+
+                                <div>
+                                    <h3>Benchmark comparison</h3>
+                                    <p>
+                                        General market context using the selected
+                                        benchmark index.
+                                    </p>
+                                </div>
+
+                                <span class="pro-chip">Pro</span>
+                            </article>
+
+                            <article class="pro-feature-card">
+                                <span class="feature-lock-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M7 10V7a5 5 0 0 1 10 0v3"></path>
+                                        <path d="M6 10h12v11H6V10Z"></path>
+                                    </svg>
+                                </span>
+
+                                <div>
+                                    <h3>PDF charts</h3>
+                                    <p>
+                                        Consistent allocation, sector, score and
+                                        holding charts inside generated reports.
+                                    </p>
+                                </div>
+
+                                <span class="pro-chip">Pro</span>
+                            </article>
+
+                            <article class="pro-feature-card">
+                                <span class="feature-lock-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M7 10V7a5 5 0 0 1 10 0v3"></path>
+                                        <path d="M6 10h12v11H6V10Z"></path>
+                                    </svg>
+                                </span>
+
+                                <div>
+                                    <h3>Deep Analysis report</h3>
+                                    <p>
+                                        The most detailed version of the existing
+                                        Fintech PDF report.
+                                    </p>
+                                </div>
+
+                                <span class="pro-chip">Pro</span>
+                            </article>
+
+                        </div>
+                    </section>
+                {% endif %}
+
+            {% else %}
+
+                <section class="panel empty-state final-card">
+                    <div class="empty-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 19V9"></path>
+                            <path d="M10 19V5"></path>
+                            <path d="M16 19v-7"></path>
+                            <path d="M22 19V2"></path>
+                        </svg>
+                    </div>
+
+                    <h2>No portfolio data yet</h2>
+
+                    <p>
+                        Upload your first portfolio CSV to generate your
+                        dashboard and portfolio analysis.
+                    </p>
+
+                    <a
+                        href="/upload"
+                        class="button button-primary"
+                    >
+                        Upload portfolio
+                    </a>
+                </section>
+
+            {% endif %}
+
+        </div>
+    </main>
+</body>
+</html>

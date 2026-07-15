@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Terms of Use · Fintech</title><link rel="stylesheet" href="/static/styles.css?v=fintech-v1"></head>
+<body class="landing-body">
+<header class="landing-nav legal-nav">
+  <a class="landing-brand" href="/"><span class="brand-mark">FT</span><span>Fintech</span></a>
+  <nav><a href="/">Home</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/disclaimer">Disclaimer</a></nav>
+  <div class="landing-actions">{% if user %}<a class="button button-secondary button-small" href="/dashboard">Dashboard</a>{% else %}<a class="text-link" href="/login">Log in</a><a class="button button-primary button-small" href="/signup">Start free</a>{% endif %}</div>
+</header>
+<main class="legal-shell">
+  <span class="page-kicker">Version {{ terms_version }}</span><h1>Terms of Use</h1>
+  <div class="legal-notice">This is a pre-launch terms draft and not a substitute for advice from a New Zealand lawyer. Complete the operator details and obtain legal review before charging users or launching publicly.</div>
+  <section><h2>1. Agreement</h2><p>By creating an account or using the service, you agree to these Terms, the Privacy Policy and the Financial Information Disclaimer.</p></section>
+  <section><h2>2. Eligibility</h2><p>You must be at least 18 years old and legally able to enter a contract. You must provide accurate account information and protect your login credentials.</p></section>
+  <section><h2>3. Research tool only</h2><p>The service organises uploaded portfolio information and provides general research and educational analysis. It does not provide personalised financial advice, investment planning, brokerage, custody, tax advice, legal advice or a recommendation to buy, sell, hold or rebalance a financial product.</p></section>
+  <section><h2>4. User decisions</h2><p>You remain responsible for checking all information and making your own decisions. Consider obtaining advice from an appropriately licensed financial advice provider and other qualified professionals before acting.</p></section>
+  <section><h2>5. Data limitations</h2><p>Outputs may be based on incomplete, stale, delayed or inaccurate uploads and third-party data. Snapshot-value changes are not investment performance because deposits, withdrawals, trades, fees, tax and currency movements may not be adjusted for. Scores and grades are limited mechanical measures and do not assess suitability or future returns.</p></section>
+  <section><h2>6. Acceptable use</h2><p>You must not misuse the service, interfere with security, upload unlawful or unauthorised data, probe other accounts, automate excessive requests or use the service to mislead others.</p></section>
+  <section><h2>7. Your content</h2><p>You retain ownership of information you upload. You grant the operator permission to process it only as needed to operate, secure and improve the service in accordance with the Privacy Policy.</p></section>
+  <section><h2>8. Plans and payments</h2><p>When paid plans are enabled, the price, billing period and included usage are shown before purchase. Stripe processes payments and provides the customer billing portal. Subscriptions renew until cancelled, and cancellation normally takes effect at the end of the current billing period unless the checkout terms state otherwise.</p></section>
+  <section><h2>9. Availability</h2><p>The service may change, be interrupted or contain errors. No uptime, data retention or report-generation guarantee is made unless a separate written service agreement says otherwise.</p></section>
+  <section><h2>10. Liability</h2><p>To the maximum extent permitted by New Zealand law, the operator is not liable for investment losses, trading decisions or indirect loss caused by reliance on the service. Nothing in these Terms excludes rights or liability that cannot lawfully be excluded, including applicable rights under the Consumer Guarantees Act or Fair Trading Act.</p></section>
+  <section><h2>11. Suspension and termination</h2><p>Accounts may be suspended for security, legal or misuse reasons. You may request account deletion. Provisions that by their nature continue after termination remain in force.</p></section>
+  <section><h2>12. New Zealand law</h2><p>These Terms are governed by New Zealand law. Before public launch, the operator should add a complaints process, legal address and dispute-resolution details appropriate to the final business model.</p></section>
+  <section><h2>13. Contact</h2><p>{% if support_email %}Contact <a href="mailto:{{ support_email }}">{{ support_email }}</a>.{% else %}<strong>A support contact has not yet been configured.</strong>{% endif %}</p></section>
+</main>
+<footer class="landing-footer legal-full-footer">
+  <div><a class="landing-brand" href="/"><span class="brand-mark">FT</span><span>Fintech</span></a><p>Portfolio research and educational analysis. Not financial advice.</p></div>
+  <div><strong>Product</strong><a href="/#features">Features</a><a href="/#difference">Why Fintech</a><a href="/#pricing">Plans</a><a href="/login">Log in</a></div>
+  <div><strong>Legal</strong><a href="/terms">Terms of Use</a><a href="/privacy">Privacy Policy</a><a href="/disclaimer">Financial Information Disclaimer</a>{% if support_email %}<a href="mailto:{{ support_email }}">Contact</a>{% endif %}</div>
+</footer>
+</body></html>

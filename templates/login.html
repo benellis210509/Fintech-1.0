@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Log in · Fintech</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/styles.css?v=fintech-v1">
+</head>
+<body class="auth-body">
+<a class="auth-brand" href="/"><span class="brand-mark">FT</span><span>Fintech</span></a>
+<main class="auth-layout">
+  <section class="auth-copy">
+    <span class="page-kicker">Welcome back</span>
+    <h1>Your portfolio research workspace, all in one place.</h1>
+    <p>Log in to access your separated dashboard, reports and watchlist.</p>
+    <div class="auth-feature"><span>✓</span>Separate account access</div>
+    <div class="auth-feature"><span>✓</span>Research-focused portfolio summaries</div>
+    <div class="auth-feature"><span>✓</span>Snapshot-value comparisons</div>
+  </section>
+  <section class="auth-card">
+    <div><h2>Log in</h2><p>Enter your details to continue.</p></div>
+    {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+    <form method="post" action="/login" class="stack-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <div class="field"><label for="login-email">Email address</label><input id="login-email" type="email" name="email" required autocomplete="email" placeholder="you@example.com"></div>
+      <div class="field"><label for="login-password">Password</label><input id="login-password" type="password" name="password" required autocomplete="current-password" placeholder="Your password"></div>
+      <button class="button button-primary full-width" type="submit">Log in</button>
+    </form>
+    <p class="auth-switch">New to Fintech? <a href="/signup">Create an account</a></p>
+  </section>
+</main>
+</body>
+</html>

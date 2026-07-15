@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Upload portfolio · Fintech</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/styles.css?v=fintech-v1"
+    >
+</head>
+
+<body>
+    {% set active = 'upload' %}
+    {% include 'nav.html' %}
+
+    <main class="main">
+        <div class="page-shell narrow-shell">
+
+            <header class="page-header">
+                <div>
+                    <span class="page-kicker">New analysis</span>
+                    <h1>Upload portfolio</h1>
+                    <p>
+                        Import a brokerage CSV to generate your next portfolio
+                        analysis and report.
+                    </p>
+                </div>
+            </header>
+
+            {% if message %}
+                <div class="alert {% if 'failed' in message|lower or 'error' in message|lower or 'used all' in message|lower %}alert-error{% else %}alert-success{% endif %}">
+                    <span>{{ message }}</span>
+
+                    {% if report_path %}
+                        <a href="/download">Download report</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <section class="panel final-card analysis-allowance-card">
+                <div class="panel-header">
+                    <div>
+                        <span class="page-kicker">Monthly allowance</span>
+                        <h2>Portfolio Analyses</h2>
+                        <p>
+                            One Portfolio Analysis includes one CSV upload and
+                            one generated report.
+                        </p>
+                    </div>
+
+                    <span class="plan-pill">
+                        {{ subscription.plan|capitalize }} plan
+                    </span>
+                </div>
+
+                <div class="allowance-grid">
+                    <div class="allowance-stat">
+                        <span>Used this month</span>
+                        <strong>{{ analyses_used }}</strong>
+                        <small>of {{ analysis_limit }} analyses</small>
+                    </div>
+
+                    <div class="allowance-stat">
+                        <span>Remaining</span>
+                        <strong>{{ analyses_remaining }}</strong>
+                        <small>available this month</small>
+                    </div>
+
+                    <div class="allowance-stat">
+                        <span>Monthly limit</span>
+                        <strong>{{ analysis_limit }}</strong>
+                        <small>
+                            {% if subscription.plan in ['pro', 'premium'] %}
+                                Pro allowance
+                            {% else %}
+                                Free allowance
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+
+                <div class="allowance-progress">
+                    <div class="progress-track">
+                        <div
+                            class="progress-fill"
+                            style="width: {{ ((analyses_used / analysis_limit) * 100) if analysis_limit else 0 }}%;"
+                        ></div>
+                    </div>
+
+                    <div class="allowance-progress-meta">
+                        <span>
+                            {{ analyses_used }} used
+                        </span>
+
+                        <span>
+                            {{ analyses_remaining }} remaining
+                        </span>
+                    </div>
+                </div>
+
+                {% if subscription.plan == 'free' and not user.is_admin %}
+                    <div class="upgrade-inline">
+                        <div>
+                            <strong>Need more analyses?</strong>
+                            <p>
+                                Fintech Pro includes 5 Portfolio Analyses per
+                                month, Deep Analysis reports, AI commentary,
+                                risk analysis, benchmark comparison and an
+                                unlimited watchlist.
+                            </p>
+                        </div>
+
+                        <a
+                            href="/#pricing"
+                            class="button button-secondary button-small"
+                        >
+                            View Pro
+                        </a>
+                    </div>
+                {% endif %}
+            </section>
+
+            <section class="panel upload-panel final-card">
+                <form
+                    id="uploadForm"
+                    action="/upload"
+                    method="post"
+                    enctype="multipart/form-data"
+                >
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="{{ csrf_token }}"
+                    >
+
+                    <label
+                        for="file-upload"
+                        class="drop-zone {% if analyses_remaining <= 0 and not user.is_admin %}drop-zone-disabled{% endif %}"
+                    >
+                        <span class="drop-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 16V4"></path>
+                                <path d="M12 4L7 9"></path>
+                                <path d="M12 4l5 5"></path>
+                                <path d="M5 20h14"></path>
+                            </svg>
+                        </span>
+
+                        {% if analyses_remaining <= 0 and not user.is_admin %}
+                            <strong>Monthly allowance used</strong>
+                            <span>
+                                Your next Portfolio Analysis becomes available
+                                at the start of next month.
+                            </span>
+                        {% else %}
+                            <strong>Choose a CSV file</strong>
+                            <span>or drag and drop it here</span>
+                        {% endif %}
+
+                        <small>
+                            Use one currency per upload. Include ticker and
+                            either market value, or shares and price.
+                        </small>
+                    </label>
+
+                    <input
+                        id="file-upload"
+                        class="hidden-file-input"
+                        type="file"
+                        name="file"
+                        accept=".csv"
+                        required
+                       
+                        {% if analyses_remaining <= 0 and not user.is_admin %}
+                            disabled
+                        {% endif %}
+                    >
+
+                    <div
+                        id="selectedFile"
+                        class="file-selection"
+                        hidden
+                    ></div>
+
+                    <div class="form-actions">
+                        <button
+                            class="button button-primary"
+                            type="submit"
+                            {% if analyses_remaining <= 0 and not user.is_admin %}
+                                disabled
+                            {% endif %}
+                        >
+                            <svg viewBox="0 0 24 24">
+                                <path d="M5 4h14v16H5V4"></path>
+                                <path d="M8 8h8"></path>
+                                <path d="M8 12h8"></path>
+                                <path d="M8 16h5"></path>
+                            </svg>
+
+                            Generate report
+                        </button>
+
+                        <span class="muted">
+                            Processing may take up to a minute.
+                        </span>
+                    </div>
+                </form>
+            </section>
+
+            <section class="panel compact-panel final-card">
+                <div class="panel-header">
+                    <div>
+                        <h2>Before uploading</h2>
+                        <p>
+                            Use one row per holding and keep ticker symbols
+                            accurate.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="check-grid">
+                    <div>
+                        <span>1</span>
+
+                        <p>
+                            <strong>Export your portfolio</strong>
+                            <small>Download a CSV from your broker.</small>
+                        </p>
+                    </div>
+
+                    <div>
+                        <span>2</span>
+
+                        <p>
+                            <strong>Check the currency</strong>
+                            <small>
+                                All rows must use the same base currency.
+                            </small>
+                        </p>
+                    </div>
+
+                    <div>
+                        <span>3</span>
+
+                        <p>
+                            <strong>Generate your report</strong>
+                            <small>
+                                One successful upload uses one monthly analysis.
+                            </small>
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <div
+        id="processingOverlay"
+        class="processing-overlay"
+        hidden
+    >
+        <div class="processing-card">
+            <span class="brand-mark">FT</span>
+
+            <h2>Analysing your portfolio</h2>
+
+            <p id="processingText">
+                Reading and validating your CSV...
+            </p>
+
+            <div class="processing-progress">
+                <span></span>
+            </div>
+
+            <div class="processing-steps">
+                <span>Reading CSV</span>
+                <span>Checking holdings</span>
+                <span>Loading market data</span>
+                <span>Calculating metrics</span>
+                <span>Generating report</span>
+            </div>
+
+            <small>
+                This usually takes 5 to 60 seconds.
+            </small>
+        </div>
+    </div>
+
+
+</body>
+</html>
